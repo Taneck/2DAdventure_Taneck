@@ -603,7 +603,7 @@ Tilemap:
       - {fileID: 2039660596, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -815596096, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -755283666, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: -2, z: 0}
@@ -636,7 +636,7 @@ Tilemap:
       - {fileID: 2039660596, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -815596096, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -755283666, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: -1, z: 0}
@@ -702,7 +702,7 @@ Tilemap:
       - {fileID: 2039660596, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -815596096, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -755283666, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: 1, z: 0}
@@ -713,7 +713,7 @@ Tilemap:
       - {fileID: 1007167616, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1240031840, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 1266507611, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 3, y: 1, z: 0}
@@ -845,7 +845,7 @@ Tilemap:
       - {fileID: 1007167616, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1240031840, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 1266507611, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 3, y: 5, z: 0}
@@ -1120,7 +1120,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1181,6 +1181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputDirection: {x: 0, y: 0}
   speed: 290
+  jumpForce: 16.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,17 @@ public class PlayerController : MonoBehaviour
     private  Rigidbody2D rb;
     public Vector2 inputDirection;
 
-    public float speed; 
+    [Header("Basic Settings")]
+    public float speed;
+    public float jumpForce;
     
     private void Awake()
     {
-        inputControl = new PlayerInputControl();
-
         rb = GetComponent<Rigidbody2D>();
+        inputControl = new PlayerInputControl();
+        inputControl.Gameplay.Jump.started += Jump;
     }
+
 
     private void OnEnable()
     {
@@ -52,8 +56,14 @@ public class PlayerController : MonoBehaviour
         {
             faceDir = -1;
         }
-
         // Character flipping
         transform.localScale = new Vector3(faceDir, 1, 1);
     }
+
+    private void Jump(InputAction.CallbackContext context)
+    {
+        // Debug.Log("Jump triggered");
+        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    }
+
 }
