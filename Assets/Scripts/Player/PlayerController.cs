@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Basic Settings")]
     public float speed;
+    public float runSpeed;
+    public float walkSpeed => speed / 2.5f;
     public float jumpForce;
     
     private void Awake()
@@ -21,6 +23,24 @@ public class PlayerController : MonoBehaviour
         physicsCheck = GetComponent<PhysicsCheck>();
         inputControl = new PlayerInputControl();
         inputControl.Gameplay.Jump.started += Jump;
+
+        #region Force Walking
+        runSpeed = speed;
+        inputControl.Gameplay.WalkButton.performed += ctx =>
+        {
+            if (physicsCheck.isGround)
+            {
+                speed = walkSpeed;
+            }
+        };
+        inputControl.Gameplay.WalkButton.canceled += ctx =>
+        {
+            if (physicsCheck.isGround)
+            {
+                speed = runSpeed;
+            }
+        };
+        #endregion
     }
 
 
