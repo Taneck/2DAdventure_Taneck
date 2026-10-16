@@ -74,6 +74,12 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
+    // test for collider trigger
+    // private void OnTriggerStay2D(Collider2D other)
+    // {
+    //     Debug.Log(other.name);
+    // }
+
     public void Move()
     {
         // Character movement
