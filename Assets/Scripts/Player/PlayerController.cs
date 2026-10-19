@@ -24,6 +24,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 originalOffset;
     private Vector2 originalSize;
 
+    [Header("Physics Materials")]
+    public PhysicsMaterial2D normal;
+    public PhysicsMaterial2D wall;
+
     [Header("States")]
     public bool isCrouch;
     public bool isHurt;
@@ -81,11 +85,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         inputDirection = inputControl.Gameplay.Move.ReadValue<Vector2>();
+
+        CheckState();
     }
 
     private void FixedUpdate()
     {
-        if (!isHurt)
+        if (!isHurt && !isAttack)
         {
             Move();
         }
@@ -165,4 +171,17 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    private void CheckState()
+    {
+        if (isDead)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("Player");
+        }
+        
+        coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
+    }
 }
