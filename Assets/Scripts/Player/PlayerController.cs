@@ -8,35 +8,41 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerInputControl inputControl;
     private  Rigidbody2D rb;
-    public Vector2 inputDirection;
     private CapsuleCollider2D coll; 
     public PhysicsCheck physicsCheck;
+    private PlayerAnimation playerAnimation;
+
+    public Vector2 inputDirection;
 
     [Header("Basic Settings")]
     public float speed;
     public float runSpeed;
     public float walkSpeed => speed / 2.5f;
     public float jumpForce;
+    public float hurtForce;
 
-    public bool isCrouch;
     private Vector2 originalOffset;
     private Vector2 originalSize;
 
-    public float hurtForce;
+    [Header("States")]
+    public bool isCrouch;
     public bool isHurt;
-
     public bool isDead;
+    public bool isAttack;
     
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
         coll = GetComponent<CapsuleCollider2D>();
+        playerAnimation = GetComponent<PlayerAnimation>();
 
         originalOffset = coll.offset;
         originalSize = coll.size;
 
         inputControl = new PlayerInputControl();
+
+        // Jump
         inputControl.Gameplay.Jump.started += Jump;
 
         #region Force Walking
@@ -56,6 +62,9 @@ public class PlayerController : MonoBehaviour
             }
         };
         #endregion
+    
+        // Attack
+        inputControl.Gameplay.Attack.started += PlayerAttack;
     }
 
 
@@ -133,7 +142,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void PlayerAttack(InputAction.CallbackContext context)
+    {
+        playerAnimation.PlayAttack();
+        isAttack = true;
+    }
 
+    # region UnityEvent
     public void GetHurt(Transform attacker)
     {
         isHurt = true;
@@ -148,5 +163,6 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         inputControl.Gameplay.Disable();
     }
+    #endregion
 
 }
