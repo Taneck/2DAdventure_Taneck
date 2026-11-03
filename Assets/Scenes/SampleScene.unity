@@ -728,7 +728,7 @@ Tilemap:
       - {fileID: 555381944, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1076791709, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 994491722, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 1, y: -1, z: 0}
@@ -849,7 +849,7 @@ Tilemap:
       - {fileID: 1007167616, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1240031840, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 1266507611, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 3, y: 2, z: 0}
@@ -893,7 +893,7 @@ Tilemap:
       - {fileID: 555381944, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1076791709, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 994491722, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7
+      m_AnimationSpeed: 7.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 1, y: 4, z: 0}
@@ -2099,16 +2099,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16fca2ffb6c14ef9816aa6c6e338c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 30
   currentHealth: 0
-  invulnerableDuration: 1
+  invulnerableDuration: 0.1
   invulnerable: 0
   OnTakeDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 782234434}
+        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+        m_MethodName: OnTakeDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDie:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 782234434}
+        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+        m_MethodName: OnDie
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &782234433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2140,9 +2164,13 @@ MonoBehaviour:
   chaseSpeed: 260
   currentSpeed: 0
   faceDir: {x: 0, y: 0, z: 0}
+  hurtForce: 5
+  attacker: {fileID: 0}
   waitTime: 2
   waitTimeCounter: 0
   wait: 0
+  isHurt: 0
+  isDead: 0
 --- !u!95 &782234435
 Animator:
   serializedVersion: 5

@@ -13,11 +13,18 @@ public class Enemy : MonoBehaviour
     public float chaseSpeed;
     public float currentSpeed;
     public Vector3 faceDir;
+    public float hurtForce;
+
+    public Transform attacker;
 
     [Header("Timer")]
     public float waitTime;
     public float waitTimeCounter;
     public bool wait;
+
+    [Header("States")]
+    public bool isHurt;
+    public bool isDead;
 
     private void Awake()
     {
@@ -44,7 +51,10 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if (!isHurt && !isDead)
+        {
+            Move();
+        }
     }
 
     public virtual void Move()
@@ -52,6 +62,9 @@ public class Enemy : MonoBehaviour
         rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime, rb.velocity.y);
     }
 
+    // <summary>
+    // Timer for waiting at walls
+    // </summary>
     public void TimeCounter()
     {
         if (wait)
@@ -64,5 +77,46 @@ public class Enemy : MonoBehaviour
                 transform.localScale = new Vector3(faceDir.x, 1, 1);
             }
         }
+    }
+
+
+    public void OnTakeDamage(Transform attackTrans)
+    {
+        attacker = attackTrans;
+        // Face the attacker
+        if(attacker.position.x - transform.position.x > 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        if(attacker.position.x - transform.position.x < 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        // Knockback upon taking damage
+        isHurt = true;
+        anim.SetTrigger("hurt");
+        Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+        
+        StartCoroutine(OnHurt(dir));
+    }
+
+    private IEnumerator OnHurt(Vector2 dir)
+    {
+        rb.AddForce(dir * hurtForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        isHurt = false;
+    }
+
+    public void OnDie()
+    {
+        gameObject.layer = 2;
+        anim.SetBool("dead", true);
+        isDead = true;
+    }
+
+
+    public void DestroyAfterAnimation()
+    {
+        Destroy(this.gameObject);
     }
 }
