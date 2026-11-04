@@ -17,10 +17,18 @@ public class Enemy : MonoBehaviour
 
     public Transform attacker;
 
+    [Header("Detection")]
+    public Vector2 centerOffset;
+    public Vector2 checkSize;
+    public float checkDistance;
+    public LayerMask attackLayer;
+
     [Header("Timer")]
     public float waitTime;
     public float waitTimeCounter;
     public bool wait;
+    public float lostTime;
+    public float lostTimeCounter;
 
     [Header("States")]
     public bool isHurt;
@@ -74,7 +82,7 @@ public class Enemy : MonoBehaviour
     }
 
     // <summary>
-    // Timer for waiting at walls
+    // Timer
     // </summary>
     public void TimeCounter()
     {
@@ -88,9 +96,37 @@ public class Enemy : MonoBehaviour
                 transform.localScale = new Vector3(faceDir.x, 1, 1);
             }
         }
+
+        if (!FoundPlayer() && lostTimeCounter > 0)
+        {
+            lostTimeCounter -= Time.deltaTime;
+        }
+        else if(FoundPlayer())
+        {
+            lostTimeCounter = lostTime;
+        }
     }
 
+    public bool FoundPlayer()
+    {
+        return Physics2D.BoxCast(transform.position + (Vector3)centerOffset, checkSize, 0, faceDir, checkDistance, attackLayer);
+    }
 
+    public void SwitchState(NpcState state)
+    {
+        var newState = state switch
+        {
+            NpcState.Patrol => patrolState,
+            NpcState.Chase => chaseState,
+            _ => null
+        };
+
+        currentState.OnExit();
+        currentState = newState;
+        currentState.OnEnter(this);
+    }
+
+    #region Events Execution Methods
     public void OnTakeDamage(Transform attackTrans)
     {
         attacker = attackTrans;
@@ -107,6 +143,7 @@ public class Enemy : MonoBehaviour
         isHurt = true;
         anim.SetTrigger("hurt");
         Vector2 dir = new Vector2(transform.position.x - attacker.position.x, 0).normalized;
+        rb.velocity = new Vector2(0, rb.velocity.y);
         
         StartCoroutine(OnHurt(dir));
     }
@@ -129,5 +166,11 @@ public class Enemy : MonoBehaviour
     public void DestroyAfterAnimation()
     {
         Destroy(this.gameObject);
+    }
+    #endregion
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position + (Vector3)centerOffset + new Vector3(checkDistance * -transform.localScale.x, 0), 0.2f);
     }
 }
