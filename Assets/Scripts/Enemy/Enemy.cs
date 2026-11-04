@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(PhysicsCheck))]
 public class Enemy : MonoBehaviour
 {
     Rigidbody2D rb;
@@ -64,11 +66,11 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        currentState.PhysicsUpdate();
         if (!isHurt && !isDead && !wait)
         {
             Move();
         }
-        currentState.PhysicsUpdate();
     }
 
     private void OnDisable()
@@ -78,7 +80,10 @@ public class Enemy : MonoBehaviour
 
     public virtual void Move()
     {
-        rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime, rb.velocity.y);
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("PreMove"))
+        {
+            rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime, rb.velocity.y);
+        }
     }
 
     // <summary>
