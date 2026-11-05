@@ -39,6 +39,8 @@ public class Enemy : MonoBehaviour
     private BaseState currentState;
     protected BaseState patrolState;
     protected BaseState chaseState;
+    protected BaseState skillState;
+    
 
     protected virtual void Awake()
     {
@@ -80,7 +82,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Move()
     {
-        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("PreMove"))
+        if(!anim.GetCurrentAnimatorStateInfo(0).IsName("PreMove") && !anim.GetCurrentAnimatorStateInfo(0).IsName("snailRecover"))
         {
             rb.velocity = new Vector2(currentSpeed * faceDir.x * Time.deltaTime, rb.velocity.y);
         }
@@ -123,6 +125,7 @@ public class Enemy : MonoBehaviour
         {
             NpcState.Patrol => patrolState,
             NpcState.Chase => chaseState,
+            NpcState.Skill => skillState,
             _ => null
         };
 

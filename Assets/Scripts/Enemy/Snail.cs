@@ -8,6 +8,6 @@ public class Snail : Enemy
     {
         base.Awake();
         patrolState = new SnailPatrolState();
-        //chaseState = new SnailChaseState();
+        skillState = new SnailSkillState();
     }
 }

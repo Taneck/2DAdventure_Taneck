@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
 
     [Header("Invulnerable")]
     public float invulnerableDuration;
-    private float invulnerableCounter;
+    [HideInInspector] public float invulnerableCounter;
     public bool invulnerable;
 
     public UnityEvent<Transform> OnTakeDamage;
