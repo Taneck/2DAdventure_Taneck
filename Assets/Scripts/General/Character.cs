@@ -15,12 +15,14 @@ public class Character : MonoBehaviour
     [HideInInspector] public float invulnerableCounter;
     public bool invulnerable;
 
+    public UnityEvent<Character> OnHealthChange;
     public UnityEvent<Transform> OnTakeDamage;
     public UnityEvent OnDie;
 
     private void Start()
     {
         currentHealth = maxHealth;
+        OnHealthChange?.Invoke(this);
     }
 
 
@@ -55,6 +57,8 @@ public class Character : MonoBehaviour
             // Death logic here
             OnDie?.Invoke();
         }
+
+        OnHealthChange?.Invoke(this);
     }
 
 
