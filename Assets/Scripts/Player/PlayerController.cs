@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed;
     public float walkSpeed => speed / 2.5f;
     public float jumpForce;
+    public float wallJumpForce;
     public float hurtForce;
 
     private Vector2 originalOffset;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public bool isHurt;
     public bool isDead;
     public bool isAttack;
+    public bool wallJump;
     
     private void Awake()
     {
@@ -106,7 +108,7 @@ public class PlayerController : MonoBehaviour
     public void Move()
     {
         // Character movement
-        if (!isCrouch)
+        if (!isCrouch && !wallJump)
         {
             rb.velocity = new Vector2(inputDirection.x * speed * Time.deltaTime, rb.velocity.y);
         }
@@ -145,6 +147,10 @@ public class PlayerController : MonoBehaviour
         if (physicsCheck.isGround)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        }else if (physicsCheck.onWall)
+        {
+            rb.AddForce(new Vector2(-inputDirection.x, 2.5f) * wallJumpForce, ForceMode2D.Impulse);
+            wallJump = true;
         }
     }
 
@@ -187,5 +193,18 @@ public class PlayerController : MonoBehaviour
         }
         
         coll.sharedMaterial = physicsCheck.isGround ? normal : wall;
+
+        if (physicsCheck.onWall)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 2f);
+        }else
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }
+
+        if (wallJump && rb.velocity.y < 0f)
+        {
+            wallJump = false;
+        }
     }
 }
