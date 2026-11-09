@@ -5,16 +5,30 @@ using UnityEngine.UI;
 
 public class PlayerStatBar : MonoBehaviour
 {
+    private Character currentCharacter;
     public Image healthImage;
     public Image healthDelayImage;
     public Image powerImage;
 
+    private bool isRecovering;
 
     private void Update()
     {
         if(healthDelayImage.fillAmount > healthImage.fillAmount)
         {
             healthDelayImage.fillAmount -= Time.deltaTime * 0.5f;
+        }
+
+        if(isRecovering)
+        {
+            float percentage = currentCharacter.currentPower / currentCharacter.maxPower;
+            powerImage.fillAmount = percentage;
+
+            if (percentage >= 1f)
+            {
+                isRecovering = false;
+                return;
+            }
         }
     }
 
@@ -25,5 +39,11 @@ public class PlayerStatBar : MonoBehaviour
     public void OnHealthChange(float percentage)
     {
         healthImage.fillAmount = percentage;
+    }
+
+    public void OnPowerChange(Character character)
+    {
+        isRecovering = true;
+        currentCharacter = character;
     }
 }

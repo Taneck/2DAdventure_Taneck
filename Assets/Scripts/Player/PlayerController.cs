@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider2D coll; 
     public PhysicsCheck physicsCheck;
     private PlayerAnimation playerAnimation;
+    private Character character;
 
     public Vector2 inputDirection;
 
@@ -21,6 +22,10 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public float wallJumpForce;
     public float hurtForce;
+
+    public float slideDistance;
+    public float slideSpeed;
+    public int slidePowerCost;
 
     private Vector2 originalOffset;
     private Vector2 originalSize;
@@ -35,6 +40,7 @@ public class PlayerController : MonoBehaviour
     public bool isDead;
     public bool isAttack;
     public bool wallJump;
+    public bool isSlide;
     
     private void Awake()
     {
@@ -42,6 +48,7 @@ public class PlayerController : MonoBehaviour
         physicsCheck = GetComponent<PhysicsCheck>();
         coll = GetComponent<CapsuleCollider2D>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        character = GetComponent<Character>();
 
         originalOffset = coll.offset;
         originalSize = coll.size;
@@ -71,6 +78,9 @@ public class PlayerController : MonoBehaviour
     
         // Attack
         inputControl.Gameplay.Attack.started += PlayerAttack;
+
+        // Slide
+        inputControl.Gameplay.Slide.started += Slide;
     }
 
 
@@ -147,6 +157,10 @@ public class PlayerController : MonoBehaviour
         if (physicsCheck.isGround)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+
+            // break slide coroutine
+            isSlide = false;
+            StopAllCoroutines();
         }else if (physicsCheck.onWall)
         {
             rb.AddForce(new Vector2(-inputDirection.x, 2.5f) * wallJumpForce, ForceMode2D.Impulse);
@@ -162,6 +176,43 @@ public class PlayerController : MonoBehaviour
         }
         playerAnimation.PlayAttack();
         isAttack = true;
+    }
+
+    private void Slide(InputAction.CallbackContext obj)
+    {
+        if(!isSlide && physicsCheck.isGround && character.currentPower >= slidePowerCost)
+        {
+            isSlide = true;
+            var targetPos = new Vector2(transform.position.x + slideDistance * transform.localScale.x, transform.position.y);
+
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+            StartCoroutine(TriggerSlide(targetPos));
+
+            character.OnSlide(slidePowerCost);
+        }
+    }
+
+    private IEnumerator TriggerSlide(Vector3 target)
+    {
+        do
+        {
+            yield return null;
+            if (!physicsCheck.isGround)
+            {
+                break;
+            }
+
+            // hit wall during slide
+            if (physicsCheck.touchLeftWall && transform.localScale.x < 0f || physicsCheck.touchRightWall && transform.localScale.x > 0f)
+            {
+                isSlide = false;
+                break;
+            }
+            rb.MovePosition(new Vector2(transform.position.x + transform.localScale.x * slideSpeed, transform.position.y));
+        } while (Mathf.Abs(target.x - transform.position.x) > 0.1f);
+
+        isSlide = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
     # region UnityEvent
@@ -183,7 +234,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckState()
     {
-        if (isDead)
+        if (isDead || isSlide)
         {
             gameObject.layer = LayerMask.NameToLayer("Enemy");
         }

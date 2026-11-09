@@ -714,6 +714,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   currentHealth: 0
+  maxPower: 0
+  currentPower: 0
+  powerRecoverSpeed: 0
   invulnerableDuration: 0.2
   invulnerableCounter: 0
   invulnerable: 0
@@ -1303,7 +1306,7 @@ Tilemap:
       - {fileID: 2039660596, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -815596096, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -755283666, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: -1, z: 0}
@@ -1523,7 +1526,7 @@ Tilemap:
       - {fileID: 555381944, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1076791709, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 994491722, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 1, y: 6, z: 0}
@@ -1578,7 +1581,7 @@ Tilemap:
       - {fileID: 1007167616, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: -1240031840, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
       - {fileID: 1266507611, guid: f66c42b72df834798bf585fb7f9dbdc2, type: 3}
-      m_AnimationSpeed: 7.0000005
+      m_AnimationSpeed: 7
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 3, y: 7, z: 0}
@@ -1858,6 +1861,9 @@ MonoBehaviour:
   jumpForce: 16.5
   wallJumpForce: 10
   hurtForce: 8
+  slideDistance: 4.5
+  slideSpeed: 0.3
+  slidePowerCost: 5
   normal: {fileID: 6200000, guid: 365000a8aec3542788e911b458a05b08, type: 2}
   wall: {fileID: 6200000, guid: a1250ef9243f245009a98eae1eecaad2, type: 2}
   isCrouch: 0
@@ -1865,6 +1871,7 @@ MonoBehaviour:
   isDead: 0
   isAttack: 0
   wallJump: 0
+  isSlide: 0
 --- !u!114 &481655548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1937,6 +1944,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  maxPower: 15
+  currentPower: 0
+  powerRecoverSpeed: 1.2
   invulnerableDuration: 2
   invulnerableCounter: 0
   invulnerable: 0
@@ -2739,6 +2749,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   currentHealth: 0
+  maxPower: 0
+  currentPower: 0
+  powerRecoverSpeed: 0
   invulnerableDuration: 0.1
   invulnerableCounter: 0
   invulnerable: 0
@@ -2821,7 +2834,7 @@ MonoBehaviour:
   waitTime: 2
   waitTimeCounter: 0
   wait: 0
-  lostTime: 3
+  lostTime: 5
   lostTimeCounter: 0
   isHurt: 0
   isDead: 0
@@ -2992,6 +3005,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   currentHealth: 0
+  maxPower: 0
+  currentPower: 0
+  powerRecoverSpeed: 0
   invulnerableDuration: 0.1
   invulnerableCounter: 0
   invulnerable: 0
