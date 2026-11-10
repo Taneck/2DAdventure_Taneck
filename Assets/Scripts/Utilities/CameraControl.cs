@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
+    [Header("Events Listening")]
+    public VoidEventSO afterSceneLoadedEvent;
     private CinemachineConfiner2D confiner2D;
     public CinemachineImpulseSource impulseSource;
     public VoidEventSO cameraShakeEvent;
@@ -17,23 +19,29 @@ public class CameraControl : MonoBehaviour
     private void OnEnable()
     {
         cameraShakeEvent.OnEventRaised += OnCameraShakeEvent;
+        afterSceneLoadedEvent.OnEventRaised += OnAfterSceneLoadedEvent;
     }
 
     private void OnDisable()
     {
         cameraShakeEvent.OnEventRaised -= OnCameraShakeEvent;
+        afterSceneLoadedEvent.OnEventRaised -= OnAfterSceneLoadedEvent;
     }
 
     private void OnCameraShakeEvent()
     {
         impulseSource.GenerateImpulse();
     }
-
-    //TODO: Modify after scene change
-    private void Start()
+    
+    private void OnAfterSceneLoadedEvent()
     {
         GetNewCameraBounds();
     }
+
+    // private void Start()
+    // {
+    //     GetNewCameraBounds();
+    // }
 
     private void GetNewCameraBounds()
     {
