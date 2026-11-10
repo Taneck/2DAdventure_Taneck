@@ -9,6 +9,7 @@ public class Sign : MonoBehaviour
     private Animator anim;
     public Transform playerTrans;
     public GameObject signSprite;
+    private IInteractable targetItem;
     private bool canPress;
 
     private void Awake()
@@ -21,8 +22,26 @@ public class Sign : MonoBehaviour
     private void OnEnable()
     {
         InputSystem.onActionChange += OnActionChange;
+
+        playerInput.Gameplay.Confirm.started += OnConfirm;
+    }
+
+    private void OnConfirm(InputAction.CallbackContext obj)
+    {
+        if (canPress)
+        {
+            targetItem?.TriggerAction();
+            GetComponent<AudioDefinition>()?.PlayAudioClip();
+        }
     }
     
+
+
+    /// <summary>
+    /// Switch the animation based on the input device
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="actionChange"></param>
     private void OnActionChange(object obj, InputActionChange actionChange)
     {
         if (actionChange == InputActionChange.ActionStarted)
@@ -53,12 +72,14 @@ public class Sign : MonoBehaviour
         if (other.CompareTag("Interactable"))
         {
             canPress = true;
+            targetItem = other.GetComponent<IInteractable>();
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         canPress = false;
+        targetItem = null;
     }
 
 }

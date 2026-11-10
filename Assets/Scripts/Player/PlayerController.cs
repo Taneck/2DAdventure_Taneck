@@ -161,10 +161,12 @@ public class PlayerController : MonoBehaviour
             // break slide coroutine
             isSlide = false;
             StopAllCoroutines();
+            GetComponent<AudioDefinition>()?.PlayAudioClip();
         }else if (physicsCheck.onWall)
         {
             rb.AddForce(new Vector2(-inputDirection.x, 2.5f) * wallJumpForce, ForceMode2D.Impulse);
             wallJump = true;
+            GetComponent<AudioDefinition>()?.PlayAudioClip();
         }
     }
 
