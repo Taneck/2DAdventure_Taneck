@@ -52,7 +52,8 @@ public class SceneLoader : MonoBehaviour
     private void NewGame()
     {
         sceneToLoad = firstLoadScene;
-        OnLoadRequestEvent(sceneToLoad, firstPosition, true);
+        // OnLoadRequestEvent(sceneToLoad, firstPosition, true);
+        loadEventSO.RaiseLoadRequestEvent(sceneToLoad, firstPosition, true);
     }
 
 
@@ -126,6 +127,9 @@ public class SceneLoader : MonoBehaviour
 
 
         // Events after the scene has been loaded
-        afterSceneLoadedEvent?.RaiseEvent();
+        if (currentLoadedScene.sceneType == SceneType.Location)
+        {
+            afterSceneLoadedEvent?.RaiseEvent();
+        }
     }
 }

@@ -6,6 +6,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Event Listening")]
+    public SceneLoadEventSO loadEvent;
+    public VoidEventSO afterSceneLoadedEvent;
+
     public PlayerInputControl inputControl;
     private  Rigidbody2D rb;
     private CapsuleCollider2D coll; 
@@ -87,11 +91,15 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         inputControl.Enable();
+        loadEvent.LoadRequestEvent += OnLoadEvent;
+        afterSceneLoadedEvent.OnEventRaised += OnAfterSceneLoadedEvent;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
+        loadEvent.LoadRequestEvent -= OnLoadEvent;
+        afterSceneLoadedEvent.OnEventRaised -= OnAfterSceneLoadedEvent;
     }
 
     private void Update()
@@ -114,6 +122,19 @@ public class PlayerController : MonoBehaviour
     // {
     //     Debug.Log(other.name);
     // }
+
+
+    // Disable input control during scene load
+    private void OnLoadEvent(GameSceneSO locationToLoad, Vector3 posToGo, bool fadeScreen)
+    {
+        inputControl.Gameplay.Disable();
+    }
+
+    // Re-enable input control after scene load
+    private void OnAfterSceneLoadedEvent()
+    {
+        inputControl.Gameplay.Enable();
+    }
 
     public void Move()
     {
