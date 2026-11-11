@@ -25,6 +25,12 @@ public class Character : MonoBehaviour
     public UnityEvent<Transform> OnTakeDamage;
     public UnityEvent OnDie;
 
+    // Ensure the character(Enemy) has full health at the start of the game
+    private void Start()
+    {
+        currentHealth = maxHealth;
+    }
+
     private void NewGame()
     {
         currentHealth = maxHealth;

@@ -185,7 +185,13 @@ public class PlayerController : MonoBehaviour
             GetComponent<AudioDefinition>()?.PlayAudioClip();
         }else if (physicsCheck.onWall)
         {
-            rb.AddForce(new Vector2(-inputDirection.x, 2.5f) * wallJumpForce, ForceMode2D.Impulse);
+            //rb.AddForce(new Vector2(-inputDirection.x, 2.5f) * wallJumpForce, ForceMode2D.Impulse);
+            float awayFromWall = physicsCheck.touchLeftWall ? 1f : -1f;
+            rb.velocity = Vector2.zero;
+            rb.AddForce(
+                new Vector2(awayFromWall * 0.5f, 1.65f) * wallJumpForce,
+                ForceMode2D.Impulse);
+
             wallJump = true;
             GetComponent<AudioDefinition>()?.PlayAudioClip();
         }
