@@ -10,15 +10,20 @@ public class SceneLoader : MonoBehaviour
 {
     public Transform playerTrans;
     public Vector3 firstPosition;
+    public Vector3 menuPosition;
+    
     [Header("Event Listening")]
     public SceneLoadEventSO loadEventSO;
-    public GameSceneSO firstLoadScene;
+    public VoidEventSO newGameEvent;
 
     [Header("Broadcasting")]
     public VoidEventSO afterSceneLoadedEvent;
     public FadeEventSO fadeEvent;
+    public SceneLoadEventSO unloadedSceneEvent;
 
-
+    [Header("Scenes")]
+    public GameSceneSO firstLoadScene;
+    public GameSceneSO menuScene;
     private GameSceneSO currentLoadedScene;
     private GameSceneSO sceneToLoad;
     private Vector3 positionToGo;
@@ -36,18 +41,20 @@ public class SceneLoader : MonoBehaviour
     //TODO: Modify after the implementation of main menu
     private void Start()
     {
-        NewGame();
+        // NewGame();
+        loadEventSO.RaiseLoadRequestEvent(menuScene, menuPosition, true);
     }
 
     private void OnEnable()
     {
         loadEventSO.LoadRequestEvent += OnLoadRequestEvent;
+        newGameEvent.OnEventRaised += NewGame;
     }
     private void OnDisable()
     {
         loadEventSO.LoadRequestEvent -= OnLoadRequestEvent;
+        newGameEvent.OnEventRaised -= NewGame;
     }
-
 
     private void NewGame()
     {
@@ -93,6 +100,10 @@ public class SceneLoader : MonoBehaviour
             fadeEvent.FadeIn(fadeDuration);
         }
         yield return new WaitForSeconds(fadeDuration);
+
+        // Broadcast events to modify stat bar
+        unloadedSceneEvent?.RaiseLoadRequestEvent(sceneToLoad, positionToGo, true);
+
         yield return currentLoadedScene.sceneReference.UnLoadScene();
 
         // Close the player
