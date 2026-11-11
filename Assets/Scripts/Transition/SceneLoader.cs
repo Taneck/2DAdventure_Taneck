@@ -16,6 +16,9 @@ public class SceneLoader : MonoBehaviour
 
     [Header("Broadcasting")]
     public VoidEventSO afterSceneLoadedEvent;
+    public FadeEventSO fadeEvent;
+
+
     private GameSceneSO currentLoadedScene;
     private GameSceneSO sceneToLoad;
     private Vector3 positionToGo;
@@ -85,7 +88,8 @@ public class SceneLoader : MonoBehaviour
     {
         if (fadeScreen)
         {
-            // Implement fade out logic here
+            // Turn dark
+            fadeEvent.FadeIn(fadeDuration);
         }
         yield return new WaitForSeconds(fadeDuration);
         yield return currentLoadedScene.sceneReference.UnLoadScene();
@@ -114,7 +118,8 @@ public class SceneLoader : MonoBehaviour
 
         if (fadeScreen)
         {
-            // Implement fade in logic here
+            // Turn light
+            fadeEvent.FadeOut(fadeDuration);
         }
 
         isLoading = false;
