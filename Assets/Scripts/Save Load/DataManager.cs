@@ -97,7 +97,7 @@ public class DataManager : MonoBehaviour
             Directory.CreateDirectory(jsonFolder);
         }
 
-        Debug.Log("Saving data to: " + resultPath);
+        // Debug.Log("Saving data to: " + resultPath);
         File.WriteAllText(resultPath, jsonData);
     }
 
