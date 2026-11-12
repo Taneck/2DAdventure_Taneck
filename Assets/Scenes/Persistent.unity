@@ -972,7 +972,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -13}
-  m_SizeDelta: {x: 185.1772, y: 63.3276}
+  m_SizeDelta: {x: 450.4276, y: 61.9242}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387590004
 MonoBehaviour:
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: ' Back To Savepoint'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3e87130b41eea40deb2d0f9a040ea87c, type: 2}
   m_sharedMaterial: {fileID: 7932477860625622718, guid: 3e87130b41eea40deb2d0f9a040ea87c, type: 2}
