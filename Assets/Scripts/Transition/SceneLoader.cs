@@ -6,7 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : MonoBehaviour, ISaveable
 {
     public Transform playerTrans;
     public Vector3 firstPosition;
@@ -49,11 +49,17 @@ public class SceneLoader : MonoBehaviour
     {
         loadEventSO.LoadRequestEvent += OnLoadRequestEvent;
         newGameEvent.OnEventRaised += NewGame;
+
+        ISaveable saveable = this;
+        saveable.RegisterSaveData();
     }
     private void OnDisable()
     {
         loadEventSO.LoadRequestEvent -= OnLoadRequestEvent;
         newGameEvent.OnEventRaised -= NewGame;
+
+        ISaveable saveable = this;
+        saveable.UnRegisterSaveData();
     }
 
     private void NewGame()
@@ -141,6 +147,28 @@ public class SceneLoader : MonoBehaviour
         if (currentLoadedScene.sceneType == SceneType.Location)
         {
             afterSceneLoadedEvent?.RaiseEvent();
+        }
+    }
+
+    public DataDefinition GetDataID()
+    {
+        return GetComponent<DataDefinition>();
+    }
+
+    public void GetSaveData(Data data)
+    {
+        data.SaveGameScene(currentLoadedScene);
+    }
+
+    public void LoadData(Data data)
+    {
+        var playerID = playerTrans.GetComponent<DataDefinition>().ID;
+        if (data.characterPosDict.ContainsKey(playerID))
+        {
+            positionToGo = data.characterPosDict[playerID];
+            sceneToLoad = data.GetGameScene();
+
+            OnLoadRequestEvent(sceneToLoad, positionToGo, true);
         }
     }
 }
