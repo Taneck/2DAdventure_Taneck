@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +19,8 @@ public class DataManager : MonoBehaviour
 
     private Data saveData;
 
+    private string jsonFolder;
+
     private void Awake()
     {
         if (instance == null)
@@ -29,6 +33,11 @@ public class DataManager : MonoBehaviour
         }
 
         saveData = new Data();
+
+        jsonFolder = Application.persistentDataPath + "/SAVEDATA/";
+
+        ReadSavedData();
+
     }
 
     private void OnEnable()
@@ -74,10 +83,22 @@ public class DataManager : MonoBehaviour
             saveable.GetSaveData(saveData);
         }
 
-        foreach (var item in saveData.characterPosDict)
+        // foreach (var item in saveData.characterPosDict)
+        // {
+        //     Debug.Log(item.Key + ": " + item.Value);
+        // }
+
+        var resultPath = jsonFolder + "data.sav";
+
+        var jsonData = JsonConvert.SerializeObject(saveData);
+
+        if (!File.Exists(resultPath))
         {
-            Debug.Log(item.Key + ": " + item.Value);
+            Directory.CreateDirectory(jsonFolder);
         }
+
+        Debug.Log("Saving data to: " + resultPath);
+        File.WriteAllText(resultPath, jsonData);
     }
 
     public void Load()
@@ -85,6 +106,19 @@ public class DataManager : MonoBehaviour
         foreach (var saveable in saveableList)
         {
             saveable.LoadData(saveData);
+        }
+    }
+
+    private void ReadSavedData()
+    {
+        var resultPath = jsonFolder + "data.sav";
+
+        if (File.Exists(resultPath))
+        {
+            var stringData = File.ReadAllText(resultPath);
+            var jsonData = JsonConvert.DeserializeObject<Data>(stringData);
+
+            saveData = jsonData;
         }
     }
 }
