@@ -7,8 +7,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Event Listening")]
-    public SceneLoadEventSO loadEvent;
+    public SceneLoadEventSO sceneLoadEvent;
     public VoidEventSO afterSceneLoadedEvent;
+    public VoidEventSO loadDataEvent;
+    public VoidEventSO backToMenuEvent;
 
     public PlayerInputControl inputControl;
     private  Rigidbody2D rb;
@@ -85,21 +87,26 @@ public class PlayerController : MonoBehaviour
 
         // Slide
         inputControl.Gameplay.Slide.started += Slide;
+
+        inputControl.Enable();
     }
 
 
     private void OnEnable()
     {
-        inputControl.Enable();
-        loadEvent.LoadRequestEvent += OnLoadEvent;
+        sceneLoadEvent.LoadRequestEvent += OnLoadEvent;
         afterSceneLoadedEvent.OnEventRaised += OnAfterSceneLoadedEvent;
+        loadDataEvent.OnEventRaised += OnLoadDataEvent;
+        backToMenuEvent.OnEventRaised += OnLoadDataEvent;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
-        loadEvent.LoadRequestEvent -= OnLoadEvent;
+        sceneLoadEvent.LoadRequestEvent -= OnLoadEvent;
         afterSceneLoadedEvent.OnEventRaised -= OnAfterSceneLoadedEvent;
+        loadDataEvent.OnEventRaised -= OnLoadDataEvent;
+        backToMenuEvent.OnEventRaised -= OnLoadDataEvent;
     }
 
     private void Update()
@@ -134,6 +141,12 @@ public class PlayerController : MonoBehaviour
     private void OnAfterSceneLoadedEvent()
     {
         inputControl.Gameplay.Enable();
+    }
+    
+    // Read game progress
+    private void OnLoadDataEvent()
+    {
+        isDead = false;
     }
 
     public void Move()

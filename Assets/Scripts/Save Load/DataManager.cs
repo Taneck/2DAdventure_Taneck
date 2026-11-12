@@ -11,6 +11,7 @@ public class DataManager : MonoBehaviour
 
     [Header("Events Listening")]
     public VoidEventSO saveDataEvent;
+    public VoidEventSO loadDataEvent;
 
     private List<ISaveable> saveableList = new List<ISaveable>();
 
@@ -33,11 +34,13 @@ public class DataManager : MonoBehaviour
     private void OnEnable()
     {
         saveDataEvent.OnEventRaised += Save;
+        loadDataEvent.OnEventRaised += Load;
     }
 
     private void OnDisable()
     {
         saveDataEvent.OnEventRaised -= Save;
+        loadDataEvent.OnEventRaised -= Load;
     }
 
     private void Update()
