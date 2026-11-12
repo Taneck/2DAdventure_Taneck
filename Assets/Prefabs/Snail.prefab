@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1967719812757081326}
   - component: {fileID: 5012953633786610709}
   - component: {fileID: 5156398161447650797}
+  - component: {fileID: -6912282526030414900}
   m_Layer: 8
   m_Name: Snail
   m_TagString: Untagged
@@ -373,3 +374,17 @@ CapsuleCollider2D:
   m_Offset: {x: 0.015322225, y: 0.6246397}
   m_Size: {x: 1.7436901, y: 1.2492846}
   m_Direction: 1
+--- !u!114 &-6912282526030414900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8814020479729269485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c32e2ac3b12646c0ae3286e356d6c53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  persistentType: 0
+  ID: 35f5f7b7-05a9-423a-b687-700a7bb39f7e

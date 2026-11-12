@@ -5,7 +5,7 @@ using UnityEngine;
 public class SavePoint : MonoBehaviour, IInteractable
 {
     [Header("Event Broadcasts")]
-    public VoidEventSO LoadGameEvent;
+    public VoidEventSO saveDataEvent;
 
     [Header("variable parameters")]
     public SpriteRenderer spriteRenderer;
@@ -30,7 +30,7 @@ public class SavePoint : MonoBehaviour, IInteractable
             lightObj.SetActive(true);
 
             // TODO: Save game data
-            LoadGameEvent.RaiseEvent();
+            saveDataEvent.RaiseEvent();
 
 
             this.gameObject.tag = "Untagged";
